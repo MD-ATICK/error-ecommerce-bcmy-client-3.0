@@ -14,10 +14,12 @@ function OrderAll() {
     const [change, setchange] = useState(false);
     const [loading, setloading] = useState(false);
 
+    const token = localStorage.getItem('token')
+
     const orderFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverOrders}/all-order`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverOrders}/all-order`, { headers : { Authorization : token }})
             if (status === 200) {
                 console.log(data)
                 setorderdata(data)
@@ -41,7 +43,7 @@ function OrderAll() {
     const dltOrder = async (id) => {
         try {
             // setloading(true)
-            const { data , status } = await axios.delete(`${serverOrders}/order-delete?id=${id}` , {withCredentials : true})
+            const { data , status } = await axios.delete(`${serverOrders}/order-delete?id=${id}` , { headers : { Authorization : token}})
             if(status === 200){
                 console.log(data)
                 // setloading(false)

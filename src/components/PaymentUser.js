@@ -16,13 +16,14 @@ function PaymentUser(props) {
     const [ppemail, setpemail] = useState('');
     const cart = localStorage.getItem('cart')
     const xcart = JSON.parse(cart)
+    const token = localStorage.getItem('token')
 
     const PaymentClick = async () => {
         try {
             setloading(true)
             const orderdata = { shippingdata : props.shippingdata, cartitems : xcart , promocode : props.ccode , promodiscount: props.promooffer, subtotal: props.subtotal, shippingtax: props.shippingtax }
           
-            const { data , status } = await axios.post(`${serverOrders}/order-create` , orderdata , {withCredentials : true})
+            const { data , status } = await axios.post(`${serverOrders}/order-create` , orderdata , { headers : { Authorization : token}})
             if(status === 201){
                 console.log(data)
                 setloading(false)

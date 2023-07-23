@@ -13,11 +13,9 @@ function Events() {
     try {
       const { data, status } = await axios.get(`${serverEvents}/events`)
       if (status === 200) {
-        console.log(data)
         setevent(data)
       }
     } catch (error) {
-      console.log(error)
     }
   }
 

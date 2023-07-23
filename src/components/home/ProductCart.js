@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiFillStar } from 'react-icons/ai'
 import { AiOutlineEye } from 'react-icons/ai'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
@@ -7,13 +7,16 @@ import { FiHeart } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import { BsSuitHeartFill } from 'react-icons/bs'
 import { MdClose } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 
 function ProductCart(props) {
     const d = props.item.name
     const product_name = d.replace(/\s+/g, "-")
     const [click, setclick] = useState(false);
     const [eye, seteye] = useState(false);
-
+    
+    const navigate = useNavigate()
+    const { user } = useSelector((state) => state.getuser)
 
 
     useEffect(() => {
@@ -32,9 +35,13 @@ function ProductCart(props) {
     }, [props.wbox]);
 
 
+
     const CardAddHandle = () => {
+        if(user && user !== '' &&user.isauthuser === false){
+            return navigate('/sign-in')
+        }
         const cart = localStorage.getItem('cart')
-        props.setcbox(!props.cbox)
+        props.setwbox(!props.wbox)
         if (cart === null) {
             console.log(props.item)
             localStorage.setItem('cart', JSON.stringify([{ ...props.item, quantity: 1 }]))

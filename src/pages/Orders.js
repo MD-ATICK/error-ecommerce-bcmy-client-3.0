@@ -68,18 +68,16 @@ function Orders() {
         },
     ]
 
-
+    const token = localStorage.getItem('token')
 
     const FetchMyorder = async () => {
         try {
-            const { data , status } = await axios.get(`${serverOrders}/user-order` , {withCredentials : true})
+            const { data , status } = await axios.get(`${serverOrders}/user-order` , { headers : { Authorization : `Bearer ${token}`}})
             if(status === 200){
-                console.log(data)
                 setdata(data)
             }
             
         } catch (error) {
-            console.log(error)
         }
     }
 

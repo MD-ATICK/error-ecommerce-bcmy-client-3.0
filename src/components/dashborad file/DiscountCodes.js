@@ -18,6 +18,8 @@ function DiscountCodes() {
     const [change, setchange] = useState(false);
     const [loading, setloading] = useState(false);
 
+    const token = localStorage.getItem('token')
+
     const [copoundata, setcopoundata] = useState('');
     const [name, setname] = useState('e35c88e7bab5988917dd52621c');
     const [minamount, setminamount] = useState('600');
@@ -29,7 +31,7 @@ function DiscountCodes() {
     const copounFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverCopouns}/discountcopounget`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverCopouns}/discountcopounget`, { headers : { Authorization : token}})
             if (status === 200) {
                 console.log(data)
                 setcopoundata(data)
@@ -53,7 +55,7 @@ function DiscountCodes() {
     const dltCopoun = async (id) => {
         try {
             // setloading(true)
-            const { data, status } = await axios.delete(`${serverCopouns}/discountcopoundelete?id=${id}`, { withCredentials: true })
+            const { data, status } = await axios.delete(`${serverCopouns}/discountcopoundelete?id=${id}`, { headers : { Authorization : token}} )
             if (status === 200) {
                 console.log(data)
                 // setloading(false)
@@ -131,7 +133,7 @@ function DiscountCodes() {
         const copoundetails = { name, valuePercentage: value, minamount, maxamount }
         try {
             console.log(copoundetails)
-            const { data, status } = await axios.post(`${serverCopouns}/discountcopoun`, copoundetails, { withCredentials: true })
+            const { data, status } = await axios.post(`${serverCopouns}/discountcopoun`, copoundetails, { headers : { Authorization : token} })
             if (status === 201) {
                 console.log(data)
                 setopen(false)

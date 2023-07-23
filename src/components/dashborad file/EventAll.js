@@ -16,10 +16,12 @@ function EventAll() {
     const [change, setchange] = useState(false);
     const [loading, setloading] = useState(false);
 
+    const token = localStorage.getItem('token')
+
     const eventFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverEvents}/events`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverEvents}/events`, { headers : { Authorization : token}})
             if (status === 200) {
                 console.log(data)
                 seteventdata(data)
@@ -38,7 +40,7 @@ function EventAll() {
     const dltevent = async (id) => {
         try {
             setloading(true)
-            const { data , status } = await axios.delete(`${serverEvents}/events?id=${id}` , {withCredentials : true})
+            const { data , status } = await axios.delete(`${serverEvents}/events?id=${id}` , { headers : { Authorization : token}})
             if(status === 200){
                 console.log(data)
                 setchange(true)

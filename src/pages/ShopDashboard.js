@@ -6,7 +6,7 @@ import { FiShoppingBag} from 'react-icons/fi'
 import { FiBox} from 'react-icons/fi'
 import { TbMessage} from 'react-icons/tb'
 import { RxDashboard} from 'react-icons/rx'
-import { BsFolderPlus} from 'react-icons/bs'
+import { BsFolderPlus, BsShopWindow} from 'react-icons/bs'
 import { VscNewFile} from 'react-icons/vsc'
 import { FaRegMoneyBillAlt} from 'react-icons/fa'
 import { HiOutlineReceiptRefund} from 'react-icons/hi'
@@ -19,11 +19,14 @@ import CreateEvent from '../components/dashborad file/CreateEvent'
 import DiscountCodes from '../components/dashborad file/DiscountCodes'
 import DashBoard from '../components/dashborad file/DashBoard'
 import Settings from '../components/dashborad file/Settings'
+import { useSelector } from 'react-redux'
+import AllSellers from './seller/AllSellers'
 
 function ShopDashboard() {
 
     const navigate = useNavigate()
     const [activetap, setactivetap] = useState(1);
+    const { user } = useSelector((state) => state.getuser)
 
   return (
     <div className='fullpagecover bg-[#d2d2d2]'>
@@ -37,7 +40,7 @@ function ShopDashboard() {
                 <FiShoppingBag className='text-2xl text-stone-600'/>
                 <FiBox className='text-2xl text-stone-600'/>
                 <TbMessage className='text-2xl text-stone-600'/>
-                <img className='w-[40px] h-[40px] rounded-full object-cover' src="https://img.freepik.com/premium-photo/close-up-young-woman-painting-eggs-pastel-colors-easter-while-sitting-table-kitchen-copy-space_236854-23168.jpg?size=626&ext=jpg" alt="" />
+               { user && user !== '' && <img className='w-[40px] h-[40px] rounded-full object-cover' src={user.user.avatar} alt="" /> } 
            </div>
         </nav>
         <div className='flex justify-between'>
@@ -50,7 +53,7 @@ function ShopDashboard() {
                     <li onClick={() => setactivetap(5)} className={activetap === 5 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><FiTag className='text-2xl'/>  All Events</li>
                     <li onClick={() => setactivetap(6)} className={activetap === 6 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><VscNewFile className='text-2xl'/>  Create Event</li>
                     <li onClick={() => setactivetap(7)} className={activetap === 7 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><FaRegMoneyBillAlt className='text-2xl'/> Withdraw Money</li>
-                    <li onClick={() => setactivetap(8)} className={activetap === 8 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><TbMessage className='text-2xl'/> Shop Inbox </li>
+                    <li onClick={() => setactivetap(8)} className={activetap === 8 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><BsShopWindow className='text-2xl'/> Shop Inbox </li>
                     <li onClick={() => setactivetap(9)} className={activetap === 9 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><AiFillGift className='text-2xl'/> Discount Copouns</li>
                     <li onClick={() => setactivetap(10)} className={activetap === 10 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><HiOutlineReceiptRefund className='text-2xl'/> Refunds</li>
                     <li onClick={() => setactivetap(11)} className={activetap === 11 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><AiOutlineSetting className='text-2xl'/> Settings</li>
@@ -65,7 +68,7 @@ function ShopDashboard() {
                     <li title='All events' onClick={() => setactivetap(5)} className={activetap === 5 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><FiTag className='text-2xl'/>  </li>
                     <li title='Create Events' onClick={() => setactivetap(6)} className={activetap === 6 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><VscNewFile className='text-2xl'/>  </li>
                     <li title='withdraw money' onClick={() => setactivetap(7)} className={activetap === 7 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><FaRegMoneyBillAlt className='text-2xl'/>  </li>
-                    <li title='shop inbox' onClick={() => setactivetap(8)} className={activetap === 8 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><TbMessage className='text-2xl'/>  </li>
+                    <li title='shop inbox' onClick={() => setactivetap(8)} className={activetap === 8 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><BsShopWindow className='text-2xl'/>  </li>
                     <li title='discount copouns' onClick={() => setactivetap(9)} className={activetap === 9 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><AiFillGift className='text-2xl'/>  </li>
                     <li title='refunds' onClick={() => setactivetap(10)} className={activetap === 10 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><HiOutlineReceiptRefund className='text-2xl'/> </li>
                     <li title='settings' onClick={() => setactivetap(11)} className={activetap === 11 ? 'flex items-center gap-x-3 text-orange-700 text-[16px] cursor-pointer font-[400] tracking-wide' : 'flex items-center gap-x-3 text-stone-600 text-[16px] cursor-pointer font-[400] tracking-wide'}><AiOutlineSetting className='text-2xl'/> </li>
@@ -80,7 +83,7 @@ function ShopDashboard() {
                  activetap === 5 ? <EventAll/> : null ||
                  activetap === 6 ? <CreateEvent  setactivetap={setactivetap} /> : null ||
                  activetap === 7 ? 7 : null ||
-                 activetap === 8 ? 8 : null ||
+                 activetap === 8 ? <AllSellers/> : null ||
                  activetap === 9 ? <DiscountCodes /> : null ||
                  activetap === 10 ? 10 : null ||
                  activetap === 11 ? <Settings/> : null 

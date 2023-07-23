@@ -3,6 +3,9 @@ import { Country, State } from 'country-state-city'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import PaymentUser from '../components/PaymentUser'
+import { RiSecurePaymentLine} from  'react-icons/ri'
+import { IoMdDoneAll} from  'react-icons/io'
+import { MdOutlineLocalShipping} from  'react-icons/md'
 
 function Checkout() {
 
@@ -51,7 +54,6 @@ function Checkout() {
         setloading(true)
         if (ccode.length > 0) {
             if (12345 === Number(ccode)) {
-                console.log('one')
                 setss(true)
                 subtotal -= subtotal * 0.05
                 toast(subtotal, { theme: 'light' })
@@ -63,15 +65,12 @@ function Checkout() {
                     setloading(false)
                 }, 1000);
             } else {
-                console.log('one2')
                 setloading(false)
                 toast('Copuon Code Not Avaiable', { theme: 'light' })
             }
         } else {
-            console.log('two')
             localStorage.setItem('s_info', JSON.stringify(shippingdata))
             toast(subtotal, { theme: 'light' })
-            console.log(shippingdata)
             setTimeout(() => {
                 setactivetap(2)
                 setpayment(true)
@@ -80,7 +79,6 @@ function Checkout() {
         }
     }
 
-    console.log(sdata)
 
     useEffect(() => {
         const x = localStorage.getItem('cart')
@@ -107,15 +105,18 @@ function Checkout() {
 
             <div className='w-full flex mt-6 px-4 justify-center'>
                 <div className='flex items-center'>
-                    <p className='py-3 px-4 bg-pink-700 shadow-lg flex rounded-full text-[13px] text-white'>1. Shipping</p>
+                    {/* <p className='py-3 px-4 bg-pink-700 shadow-lg hidden md:flex rounded-full text-[13px] text-white'>1. Shipping</p> */}
+                    <p className={payment ? 'py-3 px-4 bg-pink-700 flex text-[13px] md:hidden rounded-full text-white' : 'py-3 px-4 bg-stone-400 md:hidden text-[30px] rounded-full text-white'}><MdOutlineLocalShipping /> </p>
                     <p className={payment ? 'h-[4px] rounded-full w-[80px] bg-pink-700' : 'h-[4px] rounded-full w-[70px] bg-stone-400'}></p>
                 </div>
                 <div className='flex items-center'>
-                    <p className={payment ? 'py-3 px-4 bg-pink-700 text-[13px] rounded-full text-white' : 'py-3 px-4 bg-stone-400 text-[13px] rounded-full text-white'}>2. Payment</p>
+                    {/* <p className={payment ? 'py-3 px-4 bg-pink-700 hidden text-[13px] md:flex rounded-full text-white' : 'py-3 px-4 bg-stone-400 text-[13px] rounded-full text-white'}>2. Payment</p> */}
+                    <p className={payment ? 'py-3 px-4 bg-pink-700 flex text-[13px] md:hidden rounded-full text-white' : 'py-3 px-4 bg-stone-400 md:hidden text-[30px] rounded-full text-white'}><RiSecurePaymentLine/> </p>
                     <p className={succssplace ? 'h-[4px] rounded-full w-[80px] bg-pink-700' : 'h-[4px] rounded-full w-[70px] bg-stone-400'}></p>
                 </div>
                 <div className='flex items-center'>
-                    <p className={succssplace ? 'py-3 px-4 bg-pink-700 text-[13px] rounded-full text-white' : 'py-3 px-4 bg-stone-400 text-[13px] rounded-full text-white'}>3. Success</p>
+                    <p className={payment ? 'py-3 px-4 bg-pink-700 flex text-[13px] md:hidden rounded-full text-white' : 'py-3 px-4 bg-stone-400 md:hidden text-[30px] rounded-full text-white'}><IoMdDoneAll /> </p>
+                    {/* <p className={succssplace ? 'py-3 px-4 bg-pink-700 hidden md:flex text-[13px] rounded-full text-white' : 'py-3 px-4 bg-stone-400 text-[13px] rounded-full text-white'}>3. Success</p> */}
                 </div>
             </div>
             <div className='max-w-[1400px] mx-auto'>

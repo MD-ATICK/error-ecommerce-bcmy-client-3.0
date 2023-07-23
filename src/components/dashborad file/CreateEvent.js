@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { serverEvents, serverProducts } from '../../server';
+import { useNavigate } from 'react-router-dom';
 
 
 function CreateEvent(props) {
@@ -20,6 +21,10 @@ function CreateEvent(props) {
     const [discount, setdiscount] = useState('');
     const [startdate, setstartdate] = useState('');
     const [enddate, setenddate] = useState('');
+    const navigate = useNavigate()
+
+
+    const token = localStorage.getItem('token')
 
     const hchange = async (e) => {
         const form = new FormData();
@@ -48,10 +53,11 @@ function CreateEvent(props) {
         e.preventDefault()
         try {
             console.log({ name, category, description, price, stock, images: convert, startdate:  new Date(startdate).toISOString(), enddate:  new Date(enddate).toISOString() , discount })
-            const { data, status } = await axios.post(`${serverEvents}/create-event`, { name, category, description, price, stock, images: convert, startdate:  new Date(startdate).toISOString(), enddate:  new Date(enddate).toISOString() , discount }, { withCredentials: true })
+            const { data, status } = await axios.post(`${serverEvents}/create-event`, { name, category, description, price, stock, images: convert, startdate:  new Date(startdate).toISOString(), enddate:  new Date(enddate).toISOString() , discount }, { headers : { Authorization : token}})
             if (status === 201) {
                 console.log(data)
                 props.setactivetap(5)
+                navigate('/events')
                 toast.success(<p className='text-stone-600 tracking-wide px-2'>Product Create Successfull</p>, toastinfo)
             }
         } catch (error) {

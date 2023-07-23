@@ -2,8 +2,8 @@ import React from 'react'
 
 function Loader() {
   return (
-    <div className='createproductloader'>
-      <div>Loading ... </div>
+    <div className='loaderbox'>
+      <div className='loader'></div>
     </div>
   )
 }

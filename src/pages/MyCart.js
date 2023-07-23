@@ -6,7 +6,6 @@ import { FaRegSadTear } from 'react-icons/fa'
 
 function MyCart(props) {
 
-    console.log(productData[1])
     const [quantity, setquantity] = useState(1);
     const [cartdata, setcartdata] = useState('');
     let total = 0;
@@ -69,10 +68,9 @@ function MyCart(props) {
                         </ul>
                         <section>
                             {
-                                cartdata && cartdata.map((i) => {
+                                cartdata && cartdata.map((i , index) => {
                                     total += (i.price * i.quantity)
-                                    console.log(i)
-                                    return <ul className='w-full flex justify-between my-1 atick2 border-b-[2px] border-[#622d60]'>
+                                    return <ul key={index} className='w-full flex justify-between my-1 atick2 border-b-[2px] border-[#622d60]'>
                                         <li className='flex-[0.3]'><img className='w-16' src={i.images[0].image} alt="" /></li>
                                         <li className='text-[13px] capitalize flex-[0.4] pl-1'>{i.name}</li>
                                         <li className=' flex-[0.4]'>

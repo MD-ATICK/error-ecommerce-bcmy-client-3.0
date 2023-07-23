@@ -7,7 +7,7 @@ import { server } from "../server.js";
 import { toast } from "react-hot-toast";
 
 const Singup = () => {
-  const nevigate = useNavigate()
+  const navigate = useNavigate()
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,13 +30,13 @@ const Singup = () => {
         try {
           const res = await axios.post(`${server}/register`, { name, email, password, avatar: data.data.url }, { headers: { "Content-Type": "application/json" } })
           if (res.status === 201) {
-            console.log(res.data)
             setName('')
             setEmail('')
             setPassword('')
             setAvatar(null)
-            toast.success('2 mintues You cannot Submit')
-            toast.success(res.data.message)
+            navigate('/sign-in')
+            // toast.success('2 mintues You cannot Submit')
+            // toast.success(res.data.message)
           } else {
             toast.error('Failed to resgister')
           }
@@ -51,7 +51,6 @@ const Singup = () => {
       }
 
     } catch (error) {
-      console.log(error)
     }
   }
 

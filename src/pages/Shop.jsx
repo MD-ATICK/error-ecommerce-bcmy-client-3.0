@@ -44,45 +44,19 @@ function Shop() {
         }
     }
 
-
-
     const followClick = async () => {
-        try {
-            setfollowloading(true)
-            const { data, status } = await axios.get(`${serverShop}/addfollow?id=${id}`, { withCredentials: true })
-            if (status === 200) {
-                setfollowck(true)
-                setchange(!change)
-                setfollowloading(false)
-                console.log(data)
-            }
-        } catch (error) {
-            setfollowloading(false)
-            setfollowck(false)
-            console.log(error)
-        }
+      
     }
+
     const unfollowClick = async () => {
-        try {
-            setfollowloading(true)
-            const { data, status } = await axios.get(`${serverShop}/deletefollow?id=${id}`, { withCredentials: true })
-            if (status === 200) {
-                setfollowck(true)
-                setchange(!change)
-                setfollowloading(false)
-                console.log(data)
-            }
-        } catch (error) {
-            setfollowloading(false)
-            setfollowck(false)
-            console.log(error)
-        }
+    
     }
+    const token = localStorage.getItem('token')
 
     const FollowFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverShop}/followck/${id}`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverShop}/followck/${id}`, { headers : { Authorization : `Bearer ${token}`}})
             if (status === 200) {
                 if (data.followed === true) {
                     setfollowck(true)
@@ -99,12 +73,12 @@ function Shop() {
     }
 
     useEffect(() => {
-        FollowFetch()
+        // FollowFetch()
         ShopFetch()
     }, [change]);
 
     return (
-        <div className='md:fullpagecover flex flex-col border-4 justify-center bg-[#e5e5e5]'>
+        <div className='md:fullpagecover flex flex-col justify-center bg-[#e5e5e5]'>
             {
                 loading && <Loader />
             }

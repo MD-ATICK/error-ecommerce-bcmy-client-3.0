@@ -1,11 +1,11 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { server } from "../server";
 
-const Login = ({setdata}) => {
+const Login = (props) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,33 +13,32 @@ const Login = ({setdata}) => {
 
 
   const handleSubmit = async (e) => {
-    console.log({ email, password })
     e.preventDefault();
     try {
-      const { data, status } = await axios.post(`${server}/login`, { email, password }, { withCredentials : true })
+      const { data, status } = await axios.post(`${server}/login`, { email, password }, { headers : {"Content-Type" : "application/json"} })
       if (status === 201) {
-        console.log(data)
-        setdata(true)
-        navigate('/')
+        localStorage.setItem('token' , data.token)
         toast.success('User Login succesfully')
+        props.setdata(!props.data)
+        navigate('/')
+        // window.location.reload()
       } else {
         toast.error('Failed to resgister2')
       }
     } catch (error) {
       toast.error('Login Cannot Succesfull')
-      console.log(error.response)
     }
   };
 
   return (
-    <div className="min-h-[83vh] bg-blue-500 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-[83vh] bg-blue-500 px-8 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+        <h2 className="text-center text-[35px] font-extrabold text-white">
           Login to your account
         </h2>
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
+        <div className="bg-white py-12 rounded-md px-8 shadow-lg sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label

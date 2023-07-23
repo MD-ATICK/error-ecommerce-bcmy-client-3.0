@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { categoriesData, productData } from '../../static/data';
 import { GiSelfLove } from 'react-icons/gi'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
@@ -16,8 +16,6 @@ import { toast } from 'react-toastify';
 function HeaderTwo(props) {
 
 
-    props.wbox === true ? console.log(true) : console.log(false)
-    props.cbox === true ? console.log(true) : console.log(false)
 
     const { loading, user } = useSelector((state) => state.getuser)
     const [show, setshow] = useState(false);
@@ -25,6 +23,8 @@ function HeaderTwo(props) {
     const [dropdown, setdropdown] = useState(false);
     const [data, setdata] = useState([]);
     const [menu, setmenu] = useState(false);
+
+    const navigate = useNavigate()
 
     const wishlist = localStorage.getItem('wishlist')
     const x = JSON.parse(wishlist)
@@ -35,25 +35,22 @@ function HeaderTwo(props) {
         props.setwbox(!props.wbox)
         const wishlist = localStorage.getItem('wishlist')
         const x = JSON.parse(wishlist)
-        console.log(x)
         const filterproduct = x.filter((i) => i._id.toString() !== id.toString())
-        console.log(filterproduct)
         localStorage.setItem('wishlist', JSON.stringify(filterproduct))
     }
 
     const CardAddHandle = (item) => {
         setopen(false)
+        if(user && user !== '' && user.isauthuser === false){
+            return navigate('/sign-in')
+        }
         const cart = localStorage.getItem('cart')
         if (cart === null) {
-            console.log('one 2')
             localStorage.setItem('cart', JSON.stringify([{ ...item, quantity: 1 }]))
         } else {
-            console.log('one')
             const cart = localStorage.getItem('cart')
             const x = JSON.parse(cart)
-            console.log(cart)
             const finded = x.find((i) => i._id.toString() === item._id.toString())
-            console.log(finded)
             if (finded) {
                 return toast.error('Cart is Already Added', { theme: 'light' })
             }
@@ -66,8 +63,11 @@ function HeaderTwo(props) {
     const wishlistboard = () => {
         setopen(!open)
         const wishlist = localStorage.getItem('wishlist')
-        const x = JSON.parse(wishlist)
-        setdata(x)
+        if(wishlist){
+            const x = JSON.parse(wishlist)
+            setdata(x)
+        }
+        return;
     }
 
     useEffect(() => {
@@ -119,7 +119,12 @@ function HeaderTwo(props) {
                                 <p className='topbtn m-2'>{wishlist !== null ? x.length : 0}</p>
                             </div>
                             <div className='relative cursor-pointer pr-2 pt-1'>
-                                <Link to={'my-cart'}> <AiOutlineShoppingCart className=' text-[25px]' /> </Link>
+                                {
+                                user && user !== '' && user.isauthuser === true ? 
+                                <Link to={'/my-cart'}> <AiOutlineShoppingCart className=' text-[25px]' /> </Link> 
+                                :
+                                <Link to={'/sign-in'}> <AiOutlineShoppingCart className=' text-[25px]' /> </Link> 
+                                }
                                 <p className='topbtn m-2'>{cart !== null ? xc.length : 0}</p>
                             </div>
                             <div>
@@ -150,7 +155,7 @@ function HeaderTwo(props) {
                     data !== '' && data.length > 0 ? data.map((i) => {
                         const { images, price, name, _id } = i
                         return (
-                            <section className='bg-white flex items-center gap-x-4 relative text-black rounded-lg p-3 m-3'>
+                            <section key={_id} className='bg-white flex items-center gap-x-4 relative text-black rounded-lg p-3 m-3'>
                                 <MdClose className='text-2xl cursor-pointer text-stone-500 hover:text-black absolute top-3 right-3' onClick={() => deletewishlist(_id)} />
                                 <img className='w-16 rounded-lg shadow-lg object-cover mb-2' src={images[0].image} alt="" />
                                 <div>

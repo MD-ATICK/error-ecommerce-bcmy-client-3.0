@@ -456,3 +456,27 @@ input {
     display: none;
   }
 }
+
+.loaderbox{
+  background: rgb(255, 255, 255);
+  height: 8px;
+  width: 100%;
+}
+.loader{
+  height: 100%;
+  width: 100px;
+  background: rgb(78, 5, 78);
+  animation: atickvai 15s infinite linear;
+}
+
+@keyframes atickvai {
+  0%{
+      width: 100px;
+  }
+  30%{
+      width: 80%;
+  }
+  100%{
+      width: 100%;
+  }
+}

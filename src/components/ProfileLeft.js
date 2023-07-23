@@ -18,6 +18,7 @@ function ProfileLeft({ setdata }) {
 
     const navigate = useNavigate()
     const [loading, setloading] = useState(false);
+    const token = localStorage.getItem('token')
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +26,7 @@ function ProfileLeft({ setdata }) {
             console.log(1)
             setloading(true)
             console.log(2)
-            const { data, status } = await axios.get(`${server}/logout`, { withCredentials: true })
+            const { data, status } = await axios.get(`${server}/logout`, { headers : { Authorization : `Bearer ${token}`}})
             setloading(false)
             console.log(3)
             if (data !== '' && status === 200) {

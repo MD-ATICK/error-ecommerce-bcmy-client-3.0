@@ -7,7 +7,7 @@ import ActivationShopToken from './pages/ActivationShopToken';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { server } from './server';
-import { toast } from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import Home from './pages/Home';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserFetch } from './UserSlice/UserSlice';
@@ -47,21 +47,24 @@ function App() {
   const [cbox, setcbox] = useState(false);
 
   const { loading, user } = useSelector((state) => state.getuser)
-  user && console.log(user.user._id)
 
+  
   useEffect(() => {
-    dispatch(getUserFetch())
+    const token = localStorage.getItem('token')
+    dispatch(getUserFetch(token))
+    setwbox(!wbox)
+    setcbox(!cbox)
   }, [data]);
 
   return (
     <div>
     <BrowserRouter>
-      {loading && <Loader />}
-      <Header id={user && user.user._id} />
+      <Header id={user && user.isauthuser === true && user.user._id} />
       <HeaderTwo wbox={wbox} setwbox={setwbox} cbox={cbox} setcbox={setcbox} />
+      {loading && <Loader />}
       <Routes>
-        <Route path='/' element={<Home wbox={wbox} setwbox={setwbox}  />} />
-        {user && user !== '' && user.isauthuser === false && <Route path='/sign-in' element={<Login setdata={setdata} />} />}
+        <Route path='/' element={<Home wbox={wbox} cbox={cbox} setcbox={cbox} setwbox={setwbox}  />} />
+        {user && user !== '' && user.isauthuser === false && <Route path='/sign-in' element={<Login data={data} setdata={setdata} />} />}
         {user && user !== '' && user.isauthuser === false && <Route path='/sign-up' element={<Register />} />}
         <Route path='/activation/:token' element={<ActivationToken />} />
         <Route path='/activationshop/:token' element={<ActivationShopToken/>} />
@@ -70,7 +73,7 @@ function App() {
         <Route path='/products/:id' element={<SingleProduct />} />
         <Route path='/events' element={<Events />} />
         <Route path='/FAQ' element={<FAQ />} />
-        <Route path='/account' element={<Account setdata={setdata} />} />
+        <Route path='/account' element={<Account data={data} setdata={setdata} wbox={wbox} setwbox={setwbox}  cbox={cbox} setcbox={setcbox}/>} />
         <Route path='/orders' element={<Orders />} />
         <Route path='/my-cart' element={<MyCart cbox={cbox} setcbox={setcbox} />} />
         <Route path='/refunds' element={<Refunds />} />
@@ -81,7 +84,7 @@ function App() {
         {/* <Route path='/seller/shop-login' element={<SellerLogin setdata={setdata} />} /> */}
         <Route path='/seller/shop-signup' element={<SellerSignUp />} />
         <Route path='/shop/:id' element={<Shop />} />
-        <Route path='/dashboard' element={<ShopDashboard setdata={setdata} />} />
+        <Route path='/dashboard' element={<ShopDashboard />} />
         {/* {/* <Route path='/seller/create-product' element={<SellerCreateProduct  />} /> */}
         {/* <Route path='/admin/create-product' element={<SellerCreateProduct  />} /> */}
         <Route path='/products' element={<SellerProducts  />} />

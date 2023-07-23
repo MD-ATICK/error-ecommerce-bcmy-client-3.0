@@ -17,6 +17,7 @@ function SellerProducts() {
     const [show, setshow] = useState(false);
     const [datasec, setdatasec] = useState('');
 
+    const token = localStorage.getItem('token')
 
     const toastinfo = {
         position: "top-right",
@@ -32,10 +33,9 @@ function SellerProducts() {
     const ProductDelete = async (pid) => {
         try {
             setloading(true)
-            const { data, status } = await axios.delete(`${serverProducts}/adminproducts/?id=${pid}`, { withCredentials: true })
+            const { data, status } = await axios.delete(`${serverProducts}/adminproducts/?id=${pid}`, { headers : { Authorization : token }})
             if (status === 200) {
                 setloading(false)
-                console.log(data)
                 setchange(!change)
                 toast.success(<p className='text-stone-600 tracking-wide px-2'>Product Have Been Deleted</p>, toastinfo)
             } else {
@@ -46,23 +46,20 @@ function SellerProducts() {
         } catch (error) {
             setloading(false)
             toast.error(<p className='text-stone-600 tracking-wide px-2'>Product Get Unsuccessfull</p>, toastinfo)
-            console.log(error)
         }
     }
 
     const adminProuductFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverProducts}/adminproducts`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverProducts}/adminproducts`)
             if (status === 200) {
                 setproduct(data)
                 setloading(false)
-                console.log(data)
             }
         } catch (error) {
             setloading(false)
             toast.error(<p className='text-stone-600 tracking-wide px-2'>Product Get Unsuccessfull</p>, toastinfo)
-            console.log(error)
         }
     }
 
@@ -70,12 +67,10 @@ function SellerProducts() {
     const EventCreate = async (eventproduct) => {
         toast.success('Create Event Button' , {theme :'light'})
         try {
-            const { data , status } = await axios.post(`${serverEvents}/create-event` , eventproduct , { withCredentials : true } )
+            const { data , status } = await axios.post(`${serverEvents}/create-event` , eventproduct , { headers : { Authorization : token}})
             if(status === 201){
-                console.log(data)
             }
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -92,7 +87,7 @@ function SellerProducts() {
                 <div className=' w-full ml-auto '>
                     {/* Product fetch data show   <---- */}
                     {
-                        product && product !== '' && product.productsgula.map((i) => {
+                        product && product !== '' && product.products.map((i) => {
                             const { name, stock, user, _id, ratings, price, images } = i
                             return (
                                 <>

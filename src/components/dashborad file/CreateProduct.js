@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { serverProducts } from '../../server';
+import { useNavigate } from 'react-router-dom';
+import { GrChapterAdd } from 'react-icons/gr';
 
 
 function CreateProduct(props) {
@@ -17,9 +19,12 @@ function CreateProduct(props) {
     const [description, setdescription] = useState('');
     const [price, setprice] = useState('');
     const [stock, setstock] = useState(1);
+    const navigate = useNavigate()
 
     const [date, setdate] = useState('');
     const [datee, setdatee] = useState('');
+
+    const token = localStorage.getItem('token')
 
     const hchange = async (e) => {
         const form = new FormData();
@@ -48,10 +53,11 @@ function CreateProduct(props) {
         e.preventDefault()
         try {
             console.log({ name, category, description, price, stock, images: convert })
-            const { data, status } = await axios.post(`${serverProducts}/productCreate`, { name, category, description, price, stock, images: convert }, { withCredentials: true })
+            const { data, status } = await axios.post(`${serverProducts}/productCreate`, { name, category, description, price, stock, images: convert },{ headers : { Authorization : token }})
             if (status === 201) {
                 console.log(data)
                 props.setactivetap(3)
+                navigate('/products')
                 toast.success(<p className='text-stone-600 tracking-wide px-2'>Product Create Successfull</p>, toastinfo)
             }
         } catch (error) {
@@ -120,7 +126,7 @@ function CreateProduct(props) {
                         <label htmlFor="" className='font-[500] tracking-wide'>Stock <span className='text-red-600'>*</span></label>
                         <input type="number" value={stock} onChange={(e) => setstock(e.target.value)} className='border-[2px] border-stone-400 px-4 py-2 text-[15px] rounded-sm mb-4' />
                         <div className='flex items-center gap-x-3 ml-3'>
-                            <label htmlFor="img"><img className='h-16 w-16 object-cover cursor-pointer' src="https://cdn-icons-png.flaticon.com/512/10054/10054290.png" alt="" /></label>
+                            <label htmlFor="img"><GrChapterAdd className='text-2xl cursor-pointer text-stone-600'/></label>
                             <input type="file" id='img' name='img' className='imtsb hidden' onChange={hchange} />
                             <div className='flex items-center gap-x-4'>
 

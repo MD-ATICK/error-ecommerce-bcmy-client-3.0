@@ -1,3 +1,16 @@
+* problem all
+1. <!-- dashboard product  -->
+2. <!-- Reload issue netlify -->
+3. <!-- Logout issue -->
+4. Home product cart not add 
+
+
+
+
+
+* _redirects file open and write - /* /index.html 200
+* else show me the other problem in this website
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

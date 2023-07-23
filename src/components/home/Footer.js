@@ -1,5 +1,4 @@
 import React from 'react'
-import { GrSend } from 'react-icons/gr'
 import { AiOutlineTwitter } from 'react-icons/ai'
 
 function Footer() {

@@ -16,41 +16,34 @@ const SellerSignUp = () => {
     const [avatar, setAvatar] = useState();
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
-
+    
+    const token = localStorage.getItem('token')
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(1)
             const form = new FormData();
             form.append("image", avatar);
             const url = `https://api.imgbb.com/1/upload?key=6226ca30d95b139a79184223cfbc266a`;
             const { data, status } = await axios.post(url, form)
             if (status === 200) {
                 const shopdetails = { avatar: data.data.url, name, email, password, zipCode, phoneNumber, address }
-                console.log(shopdetails)
                 try {
-                    const { data , status } = await axios.post(`${serverShop}/register` , shopdetails , { withCredentials : true} )
+                    const { data , status } = await axios.post(`${serverShop}/register` , shopdetails , { headers : { Authorization : token}} )
                     if(status === 201){
-                        console.log(4)
                         console.log(data)
-                        toast.success('2 mintues You cannot Submit' , {theme : 'light'})
-                        toast.success(<p className="text-[14px]">{data.message}</p> , {theme : "light"})
+                        navigate('/')                        // toast.success('2 mintues You cannot Submit' , {theme : 'light'})
+                        // toast.success(<p className="text-[14px]">{data.message}</p> , {theme : "light"})
                     } else {
-                        console.log(6)
                         toast.error('Failed to Shop resgister')
                     }
                 } catch (error) {
-                    console.log(7)
-                    console.log(error)
                 }
             } else {
-                console.log(8)
                 toast.error('Image convert url failed')
             }
             
         } catch (error) {
-            console.log(9)
-            console.log(error)
         }
     }
 

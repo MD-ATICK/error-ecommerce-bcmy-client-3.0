@@ -19,7 +19,6 @@ function SingleProduct() {
   const [change, setchange] = useState(false);
   const [open, setopen] = useState(false);
   const [product2, setproduct2] = useState('');
-  product && product !== '' && console.log(product.product.images[0])
   
 
   const toastinfo = {
@@ -40,27 +39,23 @@ function SingleProduct() {
       if (status === 200) {
         setproduct(data)
         setloading(false)
-        console.log(data)
       }
     } catch (error) {
       setloading(false)
       toast.error(<p className='text-stone-600 tracking-wide px-2'>Product Get Unsuccessfull</p>, toastinfo)
-      console.log(error)
     }
   }
 
   const Allproduct = async () => {
     try {
       setloading(true)
-      const { data, status } = await axios.get(`${serverProducts}/adminproducts` , { withCredentials : true })
+      const { data, status } = await axios.get(`${serverProducts}/adminproducts`)
       if (status === 200) {
         setproduct2(data)
         setloading(false)
-        console.log(data)
       }
     } catch (error) {
       setloading(false)
-      console.log(error)
     }
   }
 
@@ -75,14 +70,14 @@ function SingleProduct() {
     <>
       {loading && <Loader />}
       {
-        product && product2 !== '' && product !== '' &&
+        product && product2 && product2 !== '' && product !== '' &&
         <div>
-        <div className='grid grid-cols-1 md:grid-cols-2 place-items-center mx-auto h-[82vh] max-w-[1300px] w-full'>
+        <div className='grid grid-cols-1 px-2 md:grid-cols-2 place-items-center mx-auto md:h-[82vh] max-w-[1300px] w-full'>
           <div className="left flex justify-center">
-            <div className='flex flex-col gap-y-3 mt-6'>
+            <div className='flex flex-col ml-2 gap-y-3 mt-6'>
               {
-                product.product.images.map((img) => {
-                  return <img src={img.image} onClick={(e) => {
+                product.product.images.map((img , index) => {
+                  return <img key={index} src={img.image} onClick={(e) => {
                     setimg(e.target.src)
                     setloading(true)
                     setTimeout(() => {
@@ -94,7 +89,7 @@ function SingleProduct() {
             </div>
             <img src={img == '' ? product.product.images[0].image : img} className='imgdt rounded-xl shadow-lg' alt="" />
           </div>
-          <div className="right w-full h-full border-4 p-10">
+          <div className="right md:w-full md:h-full bg-gray-200 shadow-lg m-2 p-10">
             <p className='text-3xl font-bold capitalize py-3'>{product.product.name}</p>
             <p className='text py-3'>{product.product.category}</p>
             <p className='text py-3'>{product.product.description}</p>
@@ -117,7 +112,7 @@ function SingleProduct() {
         }  
         </div>
 
-        <ProductDetails shop={product.shop} product={product.product} plength={product2.productsgula.length} />
+        <ProductDetails shop={product.shop} product={product.product} plength={product2 !== '' && product2 && product2.products.length} />
         </div>
       }
       {

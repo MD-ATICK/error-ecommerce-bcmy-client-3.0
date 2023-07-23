@@ -17,6 +17,8 @@ function AdminProducts() {
     const [show, setshow] = useState(false);
     const [datasec, setdatasec] = useState('');
 
+    const token = localStorage.getItem('token')
+
 
     const toastinfo = {
         position: "top-right",
@@ -32,10 +34,9 @@ function AdminProducts() {
     const ProductDelete = async (pid) => {
         try {
             setloading(true)
-            const { data, status } = await axios.delete(`${serverProducts}/adminproducts/?id=${pid}`, { withCredentials: true })
+            const { data, status } = await axios.delete(`${serverProducts}/adminproducts/?id=${pid}`, { headers : { Authorization : `Bearer ${token}`}})
             if (status === 200) {
                 setloading(false)
-                console.log(data)
                 setchange(!change)
                 toast.success(<p className='text-stone-600 tracking-wide px-2'>Product Have Been Deleted</p>, toastinfo)
             } else {
@@ -46,23 +47,20 @@ function AdminProducts() {
         } catch (error) {
             setloading(false)
             toast.error(<p className='text-stone-600 tracking-wide px-2'>Product Get Unsuccessfull</p>, toastinfo)
-            console.log(error)
         }
     }
 
     const adminProuductFetch = async () => {
         try {
             setloading(true)
-            const { data, status } = await axios.get(`${serverProducts}/adminproducts`, { withCredentials: true })
+            const { data, status } = await axios.get(`${serverProducts}/adminproducts`)
             if (status === 200) {
                 setproduct(data)
                 setloading(false)
-                console.log(data)
             }
         } catch (error) {
             setloading(false)
             toast.error(<p className='text-stone-600 tracking-wide px-2'>Product Get Unsuccessfull</p>, toastinfo)
-            console.log(error)
         }
     }
 
@@ -99,8 +97,8 @@ function AdminProducts() {
                                         <div className='flex flex-col justify-center items-center'>
                                             <div className='flex items-center w-[200px] pl-9'>
                                                 {
-                                                    images.map((i) => {
-                                                        return <img className='w-16 rounded-full shadow-lg object-cover my-4 h-16 border-[3px] border-green-600 -m-4 ' src={i.image} alt="" />
+                                                    images.map((i , index) => {
+                                                        return <img key={index} className='w-16 rounded-full shadow-lg object-cover my-4 h-16 border-[3px] border-green-600 -m-4 ' src={i.image} alt="" />
                                                     })
                                                 }
 
